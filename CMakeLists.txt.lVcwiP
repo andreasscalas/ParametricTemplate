@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 2.8.8)
 
 set(CMAKE_VERBOSE_MAKEFILE ON)
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fopenmp -O1")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fopenmp -O1 -j32 -Wno-implicit -Wno-error")
 
-project(ParametricTemplate)
+project(andreaslib)
 
 find_package(Qt5 COMPONENTS Core Widgets REQUIRED QUIET)
 include(ExternalProject)
@@ -18,12 +18,14 @@ find_package(VTK COMPONENTS
     vtkIOLegacy
 )
 
-set(RAPIDJSON_H ${PROJECT_SOURCE_DIR}/rapidjson)
 find_library(MATHGEO_LIB REQUIRED NAMES MATHGEOLIB MathGeoLib mathgeolib MATHGEO MathGeo mathGeo mathgeo )
 find_path(MATHGEOLIB_H MathGeoLib)
+find_package(RapidJSON REQUIRED)
 find_path(EIGEN_H /usr/)
+find_path(RAPIDJSON_H /usr/)
 find_library(TINYXML2_LIB NAMES tinyXML2 tinyxml2 TINYXML2 tinyXML_2 tinyxml_2 TINYXML_2)
 find_path(TINYXML2_H /usr/)
+find_path(ORTOOLS ortools)
 find_library(ORTOOLS_LIB NAMES or-tools ortools Ortools Or-tools OR-TOOLS ORTOOLS)
 find_path(ORTOOLS_H ortools)
 
@@ -38,13 +40,32 @@ if(NOT MATHGEOLIB_H)
         PREFIX ${PROJECT_SOURCE_DIR}/external/${MATHGEO_LIB}
         CONFIGURE_COMMAND cmake ${PROJECT_SOURCE_DIR}/external/${MATHGEO_LIB}/src/mathgeolib_project/
         BUILD_COMMAND cmake --build .
-        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}/external/${MATHGEO_LIB}/
+        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}
         UPDATE_COMMAND ""
     )
     add_library(mathgeolib STATIC IMPORTED)
     set_property(TARGET mathgeolib PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/external/${MATHGEO_LIB}/lib/libmathgeolib.a)
     add_dependencies(mathgeolib mathgeolib_project)
 endif()
+
+if(NOT RAPIDJSON_H)
+    message("RapidJSON not found. Starting library download and installation, it may take some minutes.")
+    set(RapidJSON rapidjson_project)
+    ExternalProject_Add(
+        rapidjson_project
+        GIT_REPOSITORY https://github.com/Tencent/rapidjson.git
+        GIT_TAG v1.0.0
+        PREFIX ${PROJECT_SOURCE_DIR}/external/${RapidJSON}
+        CONFIGURE_COMMAND cmake ${PROJECT_SOURCE_DIR}/external/${RapidJSON}/src/rapidjson_project/
+        BUILD_COMMAND cmake --build .
+        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}
+        UPDATE_COMMAND ""
+    )
+    add_library(rapidjsonlib STATIC IMPORTED librapidjson.a)
+    set_property(TARGET rapidjsonlib PROPERTY IMPORTED_LOCATION ${PROJECT_SOURCE_DIR}/external/${RapidJSON}/lib/librapidjson.a)
+    add_dependencies(rapidjsonlib rapidjson_project)
+endif()
+
 
 if(NOT EIGEN_H)
     message("Eigen not found. Starting library download and installation, it may take some time.")
@@ -56,7 +77,7 @@ if(NOT EIGEN_H)
         PREFIX ${PROJECT_SOURCE_DIR}/external/${Eigen}
         CONFIGURE_COMMAND cmake ${PROJECT_SOURCE_DIR}/external/${Eigen}/src/eigen_project/
         BUILD_COMMAND cmake --build .
-        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}/external/${Eigen}/
+        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}
         UPDATE_COMMAND ""
     )
     add_library(eigenlib STATIC IMPORTED libeigen.a)
@@ -74,7 +95,7 @@ if(NOT TINYXML2_H)
         PREFIX ${PROJECT_SOURCE_DIR}/external/${TINYXML2}
         CONFIGURE_COMMAND cmake ${PROJECT_SOURCE_DIR}/external/${TINYXML2}/src/tinyxml2_project/
         BUILD_COMMAND cmake --build .
-        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}/external/${TINYXML2}/
+        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}
         UPDATE_COMMAND ""
     )
     add_library(tinyxml2lib STATIC IMPORTED libtinyxml2.a)
@@ -92,7 +113,7 @@ if(NOT ORTOOLS_H)
         PREFIX ${PROJECT_SOURCE_DIR}/external/${ORTOOLS}
         CONFIGURE_COMMAND cmake ${PROJECT_SOURCE_DIR}/external/${ORTOOLS}/src/ortools_project/
         BUILD_COMMAND cmake --build .
-        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}/external/${ORTOOLS}/
+        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}
         UPDATE_COMMAND ""
     )
     add_library(ortoolslib STATIC IMPORTED libortools.a)
@@ -113,7 +134,7 @@ if(NOT VTK_FOUND)
         PREFIX ${PROJECT_SOURCE_DIR}/external/${VTK}
         CONFIGURE_COMMAND cmake ${PROJECT_SOURCE_DIR}/external/${VTK}/src/vtk_project/ -DVTK_Group_Qt=ON -DQt5_DIR=${Qt5_DIR}
         BUILD_COMMAND cmake --build .
-        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}/external/${VTK}/src/vtk_project/
+        INSTALL_COMMAND cmake --install . --prefix ${PROJECT_SOURCE_DIR}
         UPDATE_COMMAND ""
     )
     add_library(vtk STATIC IMPORTED)
