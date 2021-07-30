@@ -1,4 +1,4 @@
-<img src="docs/images/framework.png" alt="Schema of the framework" width="750px"/>
+<img src="docs/framework.png" alt="Schema of the framework" width="750px"/>
 
 The Parametric Template framework allows to visualise shapes belonging to a class, analyse their shape in search for peculiar features and to annotate them onto the geometry. The relations existing between these features can be used for defining constraints useful, for example, for restraining deformations so that the final shape would belong to the original class.
 
