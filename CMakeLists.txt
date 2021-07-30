@@ -48,7 +48,7 @@ if(VTK_FOUND)
     add_subdirectory(${DATA_STRUCTURES})
 
     # Set your files and resources here
-    file(GLOB Srcs "${MAINFOLDER}/src/*.c*" "${MAINFOLDER}/src/Styles/*.c*")*")
+    file(GLOB Srcs "${MAINFOLDER}/src/*.c*" "${MAINFOLDER}/src/Styles/*.c*")
     file(GLOB Hdrs "${MAINFOLDER}/include/*.h" "${MAINFOLDER}/include/Styles/*.h")
     file(GLOB UIs "${MAINFOLDER}/gui/*.ui")
 
