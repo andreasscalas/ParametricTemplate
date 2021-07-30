@@ -3,11 +3,9 @@ project(Annotation)
 set( ANNOTATIONLIB "${PROJECT_NAME}-lib")
 set( ANNOTATION_SRC ${MAINFOLDER}/Annotation/src/)
 set( ANNOTATION_H ${MAINFOLDER}/Annotation/include/)
-set( NANOFLANN ${MAINFOLDER}/nanoflann/)
-set(RAPIDJSON_H ${MAINFOLDER}/rapidjson/)
 
 file(GLOB Srcs "${ANNOTATION_SRC}/*.c*")
-file(GLOB Hdrs "${ANNOTATION_H}/*.h"  "${MAINFOLDER}/rapidjson/*.h")
+file(GLOB Hdrs "${ANNOTATION_H}/*.h"  "${RAPIDJSON_H}/include/*.h")
 include_directories(
     ${ANNOTATION_H}/
     ${MAINFOLDER}/ImatiSTLExtension/include/
@@ -19,7 +17,7 @@ include_directories(
     ${MAINFOLDER}/include/
     ${NANOFLANN}/include/
     ${NANOFLANN}/examples/
-    ${EIGEN_H}
+    ${EIGEN_DIR}
     ${RAPIDJSON_H}/
 )
 
@@ -33,7 +31,7 @@ target_include_directories(${ANNOTATIONLIB} PRIVATE
     ${MAINFOLDER}/include/
     ${NANOFLANN}/include/
     ${NANOFLANN}/examples/
-    ${EIGEN_H}
+    ${EIGEN_DIR}
     ${RAPIDJSON_H}/
 )
 

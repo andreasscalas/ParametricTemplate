@@ -12,8 +12,9 @@ find_package(VTK REQUIRED COMPONENTS
     vtkViewsQt
     vtkGUISupportQt
     vtkIOLegacy
-    PATHS /usr/local/
 )
+
+
 
 set(RAPIDJSON_H ${PROJECT_SOURCE_DIR}/rapidjson)
 
@@ -21,7 +22,6 @@ if(VTK_FOUND)
 
     include(${VTK_USE_FILE})
     set( MAINFOLDER ${CMAKE_SOURCE_DIR} )
-    SET( CONSTRAINTS ${MAINFOLDER}/Constraints )
     set( ANNOTATION ${MAINFOLDER}/Annotation )
     set( ANNOTATION_H ${MAINFOLDER}/Annotation/include/ )
     set( DEFORMATION ${MAINFOLDER}/Deformation )
@@ -37,9 +37,9 @@ if(VTK_FOUND)
 
     add_definitions(-DTRIANGLE_HEADER="${TRIANGLE}/triangle.h")
 
-    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fopenmp -O1")
+    set( CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread -fopenmp -O3")
     find_package(RapidJSON)
-    find_path(EIGEN_H Eigen)
+    find_path(EIGEN_DIR Eigen /usr/local/include)
     find_path(RAPIDJSON_H rapidjson-master/include/)
     add_subdirectory(${IMATISTLEX})
     add_subdirectory(${ANNOTATION})
@@ -48,47 +48,9 @@ if(VTK_FOUND)
     add_subdirectory(${DATA_STRUCTURES})
 
     # Set your files and resources here
-    file(GLOB Srcs "${MAINFOLDER}/src/*.c*" "${MAINFOLDER}/src/Styles/*.c*")
-    file(GLOB TransferSrcs "${MAINFOLDER}/src/*.c*" "${MAINFOLDER}/src/Styles/*.c*")
-    file(GLOB TestCageVsModelSrcs "${MAINFOLDER}/src/*.c*" "${MAINFOLDER}/src/Styles/*.c*")
-    file(GLOB TestComputeCoordsSrcs "${MAINFOLDER}/src/*.c*" "${MAINFOLDER}/src/Styles/*.c*")
-    file(GLOB TestConstraintsDefinitionSrcs "${MAINFOLDER}/src/*.c*" "${MAINFOLDER}/src/Styles/*.c*")
+    file(GLOB Srcs "${MAINFOLDER}/src/*.c*" "${MAINFOLDER}/src/Styles/*.c*")*")
     file(GLOB Hdrs "${MAINFOLDER}/include/*.h" "${MAINFOLDER}/include/Styles/*.h")
     file(GLOB UIs "${MAINFOLDER}/gui/*.ui")
-
-    list(REMOVE_ITEM Srcs
-        "${MAINFOLDER}/src/transfer.cpp"
-        "${MAINFOLDER}/src/testCageVsModel.cpp"
-        "${MAINFOLDER}/src/TestCoordsComputation.cpp"
-        "${MAINFOLDER}/src/TestConstraintsDefinition.cpp"
-    )
-    list(REMOVE_ITEM TransferSrcs
-        "${MAINFOLDER}/src/main.cxx"
-        "${MAINFOLDER}/src/testCageVsModel.cpp"
-        "${MAINFOLDER}/src/TestCoordsComputation.cpp"
-        "${MAINFOLDER}/src/TestConstraintsDefinition.cpp"
-    )
-
-    list(REMOVE_ITEM TestCageVsModelSrcs
-        "${MAINFOLDER}/src/transfer.cpp"
-        "${MAINFOLDER}/src/main.cxx"
-        "${MAINFOLDER}/src/TestCoordsComputation.cpp"
-        "${MAINFOLDER}/src/TestConstraintsDefinition.cpp"
-    )
-
-    list(REMOVE_ITEM TestComputeCoordsSrcs
-        "${MAINFOLDER}/src/transfer.cpp"
-        "${MAINFOLDER}/src/main.cxx"
-        "${MAINFOLDER}/src/testCageVsModel.cpp"
-        "${MAINFOLDER}/src/TestConstraintsDefinition.cpp"
-    )
-
-    list(REMOVE_ITEM TestConstraintsDefinitionSrcs
-        "${MAINFOLDER}/src/transfer.cpp"
-        "${MAINFOLDER}/src/main.cxx"
-        "${MAINFOLDER}/src/testCageVsModel.cpp"
-        "${MAINFOLDER}/src/TestCoordsComputation.cpp"
-    )
 
     set( Docs ${CMAKE_CURRENT_SOURCE_DIR}/../docs/Doxyfile.in)
 
@@ -117,7 +79,7 @@ if(VTK_FOUND)
     add_executable(${PROJECT_NAME} ${Srcs} ${Hdrs} ${UI_Srcs} ${MOC_Hdrs} ${QRC_Srcs} )
 
     qt5_use_modules(${PROJECT_NAME} Core Gui Widgets)
-    target_link_libraries(${PROJECT_NAME} #ConstraintsLib-lib
+    target_link_libraries(${PROJECT_NAME} 
         Annotation-lib
         ImatiSTLExtension-lib
         Deformation-lib
@@ -129,7 +91,7 @@ if(VTK_FOUND)
       ${CMAKE_CURRENT_BINARY_DIR}
       ${CMAKE_CURRENT_SOURCE_DIR}
       ${RAPIDJSON_H}
-      ${EIGEN_H}
+      ${EIGEN_DIR}
       ${CMAKE_SOURCE_DIR}/..
       ${MAINFOLDER}/include/
       ${MAINFOLDER}/include/Styles

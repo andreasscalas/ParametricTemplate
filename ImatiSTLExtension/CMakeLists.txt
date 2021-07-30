@@ -25,7 +25,7 @@ target_include_directories(${IMATISTLEXLIB} PRIVATE
     ${MAINFOLDER}/include/
     ${NANOFLANN}/include/
     ${NANOFLANN}/examples/
-    ${EIGEN_H}
+    ${EIGEN_DIR}
     ${DEFORMATION_H}/
     ${DATA_STRUCTURES_H}/
 )

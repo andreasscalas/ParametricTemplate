@@ -24,7 +24,7 @@ target_include_directories(${DEFORMATIONLIB} PRIVATE
     ${ANNOTATION_H}
     ${NANOFLANN}/include/
     ${NANOFLANN}/examples/
-    ${EIGEN_H}
+    ${EIGEN_DIR}
 )
 
 target_link_libraries(${DEFORMATIONLIB} ImatiSTLExtension-lib)
