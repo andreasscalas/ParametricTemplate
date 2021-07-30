@@ -1,6 +1,5 @@
 ﻿#include "layerdialog.h"
 #include "ui_layerdialog.h"
-#include "ui_attributetypedialog.h"
 
 #include <QMenu>
 

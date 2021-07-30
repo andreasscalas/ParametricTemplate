@@ -202,7 +202,5 @@ std::vector<unsigned int> MeanValueCoordinatesJu::getMaxInfluenceCageVertices(un
 
 void MeanValueCoordinatesJu::updateCageVertexPosition(unsigned int i, Eigen::Vector3d p)
 {
-    int a = 0;
-    std::cout << a;
     cageVertices.row(i) = p;
 }

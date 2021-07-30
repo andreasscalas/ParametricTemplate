@@ -11,7 +11,7 @@ class DrawableHeightMeasure : public GeometricAttribute, public DrawableAttribut
 public:
     DrawableHeightMeasure();
 
-    virtual ~DrawableHeightMeasure();
+    virtual ~DrawableHeightMeasure() override;
 
     virtual void draw(vtkSmartPointer<vtkPropAssembly> assembly) override;
     virtual void update() override;

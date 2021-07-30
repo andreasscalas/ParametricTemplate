@@ -12,7 +12,6 @@ class AttributeConstraint : public SemanticConstraint
 public:
     AttributeConstraint();
     virtual void constrain() override;
-    virtual double getError() override;
     std::vector<Attribute *> getAttributes() const;
     void setAttributes(const std::vector<Attribute *> &value);
     SemanticRelationshipType getType() const;

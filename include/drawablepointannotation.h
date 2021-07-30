@@ -11,14 +11,22 @@ class DrawablePointAnnotation : public PointAnnotation, public DrawableAnnotatio
 public:
     DrawablePointAnnotation();
     DrawablePointAnnotation(PointAnnotation*);
-    ~DrawablePointAnnotation();
+    virtual ~DrawablePointAnnotation() override;
 
-    virtual void draw(vtkSmartPointer<vtkPropAssembly> assembly);
-    virtual void update();
-    virtual void clear();
+    virtual void draw(vtkSmartPointer<vtkPropAssembly> assembly) override;
+    virtual void update() override;
+    virtual void clear() override;
     float getPointSize() const;
     void setPointSize(float value);
 
+    virtual Annotation* transfer(ExtendedTrimesh* otherMesh, short metric = 2) override;
+    virtual Annotation* parallelTransfer(ExtendedTrimesh* otherMesh, short metric = 2) override;
+
+    virtual void print(std::ostream& os) override { PointAnnotation::print(os); }
+    virtual void printJson(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer) override { PointAnnotation::printJson(writer); }
+
+    virtual std::vector<IMATI_STL::Vertex*> getInvolvedVertices() override;
+    virtual bool isPointInAnnotation(IMATI_STL::Vertex* p) override;
 protected:
     void init();
 

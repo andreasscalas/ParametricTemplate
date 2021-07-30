@@ -33,7 +33,10 @@ int ConstraintSolver::addSemanticConstraint(AnnotationsConstraint *c)
 
 bool ConstraintSolver::removeSemanticConstraint(const unsigned int cid)
 {
+    if(cid >= semanticConstraints.size())
+        return false;
     semanticConstraints.erase(semanticConstraints.begin() + cid);
+    return true;
 }
 
 bool ConstraintSolver::setSemanticConstraint(const unsigned int cid, AnnotationsConstraint *c)

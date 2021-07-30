@@ -2,7 +2,6 @@
 #include <QApplication>
 #include <random>
 #include <fstream>
-#include <drawablegraph.h>
 int main(int argc, char *argv[]){
 
     IMATI_STL::ImatiSTL::app_name = "andreaslib";

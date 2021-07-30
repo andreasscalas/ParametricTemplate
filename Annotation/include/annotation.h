@@ -24,6 +24,8 @@ class Annotation {
     public:
 
         Annotation(){ color = static_cast<unsigned char*>(std::malloc(3 * sizeof(unsigned char)));}
+        virtual ~Annotation(){}
+
         /**
          * @brief transfer This method takes the annotations of an object defined on
          * a model with a certain resolution and transfers it to a model with another resolution

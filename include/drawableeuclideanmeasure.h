@@ -10,7 +10,7 @@ class DrawableEuclideanMeasure : public GeometricAttribute, public DrawableAttri
 public:
     DrawableEuclideanMeasure();
 
-    virtual ~DrawableEuclideanMeasure();
+    virtual ~DrawableEuclideanMeasure() override;
 
     virtual void draw(vtkSmartPointer<vtkPropAssembly> assembly) override;
     virtual void update() override;

@@ -12,11 +12,6 @@ void AttributeConstraint::constrain()
 
 }
 
-double AttributeConstraint::getError()
-{
-
-}
-
 std::vector<Attribute *> AttributeConstraint::getAttributes() const
 {
     return attributes;

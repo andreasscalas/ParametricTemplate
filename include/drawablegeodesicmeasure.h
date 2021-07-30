@@ -8,6 +8,7 @@ class DrawableGeodesicMeasure : public GeometricAttribute, public DrawableAttrib
 {
 public:
     DrawableGeodesicMeasure();
+    virtual ~DrawableGeodesicMeasure()  override {}
     virtual void draw(vtkSmartPointer<vtkPropAssembly> assembly) override;
     virtual void update() override;
     virtual void print(std::ostream &) override;

@@ -32,7 +32,7 @@ void Annotation::printJson(rapidjson::PrettyWriter<rapidjson::StringBuffer> &wri
             std::size_t found = enteringArcs[i]->getLabel().find("Containment");
             if (found != std::string::npos){
                 isRoot = false;
-                writer.Int(enteringArcs[i]->getN1()->getData()->getId());
+                writer.Int(static_cast<int>(enteringArcs[i]->getN1()->getData()->getId()));
             }
         }
         if(isRoot)

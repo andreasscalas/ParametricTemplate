@@ -27,7 +27,7 @@ public:
         error = false;
     }
 
-    virtual ~DrawableAttribute() {mesh = nullptr;}
+    virtual ~DrawableAttribute() override { mesh = nullptr; }
 
     virtual void draw(vtkSmartPointer<vtkPropAssembly> assembly) = 0;
 

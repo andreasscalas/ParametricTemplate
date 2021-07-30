@@ -54,12 +54,10 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(this->ui->actionOpenMesh, SIGNAL(triggered()), this, SLOT(slotOpenMesh()));
     connect(this->ui->actionOpenCage, SIGNAL(triggered()), this, SLOT(slotOpenCage()));
     connect(this->ui->actionOpenBC, SIGNAL(triggered()), this, SLOT(slotOpenBC()));
-    connect(this->ui->actionOpenConstraints, SIGNAL(triggered()), this, SLOT(slotOpenConstraints()));
     connect(this->ui->actionOpenFragment, SIGNAL(triggered()), this, SLOT(slotOpenFragment()));
     connect(this->ui->actionSaveMesh, SIGNAL(triggered()), this, SLOT(slotSaveMesh()));
     connect(this->ui->actionSaveCage, SIGNAL(triggered()), this, SLOT(slotSaveCage()));
     connect(this->ui->actionSaveBC, SIGNAL(triggered()), this, SLOT(slotSaveBC()));
-    connect(this->ui->actionSaveConstraints, SIGNAL(triggered()), this, SLOT(slotSaveConstraints()));
     connect(this->ui->actionClearAll, SIGNAL(triggered()), this, SLOT(slotClearAll()));
     connect(this->ui->actionClearMesh, SIGNAL(triggered()), this, SLOT(slotClearMesh()));
     connect(this->ui->actionClearCage, SIGNAL(triggered()), this, SLOT(slotClearCage()));
@@ -78,7 +76,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(this->ui->actionShowCagePoints, SIGNAL(triggered(bool)), this, SLOT(slotShowCagePoints(bool)));
     connect(this->ui->actionMeshColor, SIGNAL(triggered()), this, SLOT(slotMeshColor()));
     connect(this->ui->actionCageColor, SIGNAL(triggered()), this, SLOT(slotCageColor()));
-    connect(this->ui->actionSlicerPalette, SIGNAL(triggered(bool)), this, SLOT(slotSlicerPalette(bool)));
     connect(this->ui->actionLayerDialog, SIGNAL(triggered(bool)), this, SLOT(slotLayerDialog(bool)));
     connect(this->ui->actionCamera, SIGNAL(triggered(bool)), this, SLOT(slotCamera(bool)));
     connect(this->ui->actionVerticesSelection, SIGNAL(triggered(bool)), this, SLOT(slotVerticesSelection(bool)));
@@ -88,13 +85,11 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     connect(this->ui->actionGreen, SIGNAL(triggered()), this, SLOT(slotGreen()));
     connect(this->ui->actionMean, SIGNAL(triggered()), this, SLOT(slotMeanValue()));
     connect(this->ui->actionVisible, SIGNAL(triggered(bool)), this, SLOT(slotVisible(bool)));
-    connect(this->ui->actionSlicer, SIGNAL(triggered()), this, SLOT(slotChangeToSlicer()));
     connect(this->ui->actionCheckConstraints, SIGNAL(triggered()), this, SLOT(slotCheckConstraints()));
     connect(this->lui, SIGNAL(updateMeshView(DrawableMesh*)), this, SLOT(slotUpdateMeshView(DrawableMesh*)));
     connect(this->lui, SIGNAL(deleteMesh(DrawableMesh*)), this, SLOT(slotDeleteMesh(DrawableMesh*)));
     connect(this->lui, SIGNAL(editAnnotations(DrawableMesh*)), this, SLOT(slotEditAnnotations(DrawableMesh*)));
     connect(this->lui, SIGNAL(fitRigidly(DrawableMesh*)), this, SLOT(slotFitRigidly(DrawableMesh*)));
-    connect(this->lui, SIGNAL(adaptTemplate(DrawableMesh*)), this, SLOT(slotAdaptTemplate(DrawableMesh*)));
     connect(this->cd, SIGNAL(addSemanticRelationship(std::string, double, double, double, unsigned int, unsigned int, bool)), this, SLOT(slotAddAnnotationsConstraint(std::string, double, double, double, unsigned int, unsigned int, bool)));
 
 }
@@ -150,7 +145,6 @@ void MainWindow::init(){
     this->ren->SetBackground(1.0, 1.0, 1.0);
     this->ren->SetLayer(0);
     this->ui->qvtkWidget->GetRenderWindow()->AddRenderer(ren);
-    this->ui->actionSlicerPalette->setChecked(false);
     this->ui->actionInfoPalette->setChecked(false);
     this->ui->actionVisible->setChecked(true);
     this->ui->actionCamera->setChecked(true);
@@ -180,8 +174,6 @@ void MainWindow::init(){
     this->ui->actionShowCage->setEnabled(false);
     this->ui->actionShowMesh->setChecked(false);
     this->ui->actionShowCage->setChecked(false);
-    this->ui->actionSlicerPalette->setEnabled(false);
-    this->ui->actionSlicerPalette->setChecked(false);
     this->ui->actionInfoPalette->setEnabled(false);
     this->ui->actionInfoPalette->setChecked(false);
     this->ui->verticesLabel->setText("Vertices: ");
@@ -260,27 +252,6 @@ void MainWindow::updateView(){
         for(unsigned int j = 0; j < fragments[i]->getAnnotations().size(); j++)
             for(unsigned int k = 0; k < fragments[i]->getAnnotations()[j]->getAttributes().size(); k++)
                 dynamic_cast<DrawableAttribute*>(fragments[i]->getAnnotations()[j]->getAttributes()[k])->setRenderer(ren);
-    if(this->showBoundingBox){
-
-        if(this->boundingBox.size() == 0){
-            vector<double> bb = Utilities::getOBB(model);
-            this->boundingBox.insert(this->boundingBox.end(), bb.begin(), bb.end());
-        }
-
-        vtkSmartPointer<vtkPolyData> boundingBoxData = vtkSmartPointer<vtkPolyData>::New();
-        vtkSmartPointer<vtkPolyDataMapper> boundingBoxMapper = vtkSmartPointer<vtkPolyDataMapper>::New();
-        vtkSmartPointer<vtkActor> boundingBoxActor = vtkSmartPointer<vtkActor>::New();
-        vtkSmartPointer<vtkOutlineSource> boundingBoxSource = vtkSmartPointer<vtkOutlineSource>::New();
-
-        boundingBoxSource->SetBoxTypeToOriented();
-        boundingBoxSource->SetCorners(this->boundingBox.data());
-        boundingBoxSource->Update();
-        boundingBoxMapper->SetInputConnection(boundingBoxSource->GetOutputPort());
-        boundingBoxActor->SetMapper(boundingBoxMapper);
-        boundingBoxActor->GetProperty()->SetColor(1, 0, 0);
-        this->visualPropertiesAssembly->AddPart(boundingBoxActor);
-    }
-
 
     this->ui->qvtkWidget->update();
 
@@ -314,8 +285,6 @@ void MainWindow::clear(){
     meshAssembly = vtkSmartPointer<vtkPropAssembly>::New();
     visualPropertiesAssembly = vtkSmartPointer<vtkPropAssembly>::New();
     this->resetCamera();
-    this->ui->actionSlicerPalette->setChecked(false);
-    this->ui->actionInfoPalette->setChecked(false);
     this->ui->actionVerticesSelection->setEnabled(false);
     this->ui->actionVerticesDeselection->setEnabled(false);
     this->ui->actionMeshDeformation->setEnabled(false);
@@ -472,20 +441,26 @@ void MainWindow::slotOpenBC(){
     if (!filename.isEmpty()){
         QFileInfo info(filename);
         currentPath = info.absolutePath().toStdString();
-        ifstream loadfile;
-        loadfile.open(filename.toStdString());
-        std::string line;
-        std::getline(loadfile, line);
-        loadfile.close();
+        switch(coordType){
+            case(GC):
+                throw("At the moment it is not possible to use Green Coordinates.");
+            case(MVC):
+            default:
+                this->coords = new MeanValueCoordinatesJu(model, cage);
+        }
+        coords->loadCoordinates(filename.toStdString());
         this->modelToCage.clear();
         for(IMATI_STL::Node* n = this->model->V.head(); n != nullptr; n = n->next())
         {
             Vertex* v = static_cast<Vertex*>(n->data);
-            this->modelToCage[this->model->getPointId(v)] = this->coords->getMaxInfluenceCageVertices(this->model->getPointId(v));
+            std::vector<unsigned int> ids =  this->coords->getMaxInfluenceCageVertices(this->model->getPointId(v));
+            this->modelToCage[this->model->getPointId(v)] = ids;
         }
+        this->deformationStyle->setCoords(coords);
         this->deformationStyle->setCoordsComputed(true);
         this->coordsComputed = true;
         this->lui->setBcComputed(true);
+        associateCageVerticesToAnnotations();
     }
 }
 

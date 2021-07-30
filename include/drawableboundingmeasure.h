@@ -11,7 +11,7 @@ class DrawableBoundingMeasure:  public GeometricAttribute,  public DrawableAttri
 public:
     DrawableBoundingMeasure();
 
-    virtual ~DrawableBoundingMeasure();
+    virtual ~DrawableBoundingMeasure() override;
 
     virtual void draw(vtkSmartPointer<vtkPropAssembly> assembly) override;
     virtual void update() override;

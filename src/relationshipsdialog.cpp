@@ -17,6 +17,7 @@
 #include <vtkFloatArray.h>
 #include <vtkForceDirectedLayoutStrategy.h>
 #include <vtkRenderedAreaPicker.h>
+#include <vtkPolyDataMapper.h>
 //#include <vtkRenderedGraphRepresentation.h>
 //#include <vtkGraphToGlyphs.h>
 
@@ -105,12 +106,6 @@ void RelationshipsDialog::update()
     interactorStyle->setLabel(this->ui->label);
     interactorStyle->setQvtkWidget(this->ui->qvtkWidget);
 
-//    drawableGraph = new GraphTemplate::DrawableGraph<Annotation*>(mesh->getGraph());
-//    drawableGraph->setFrameLength(100);
-//    drawableGraph->setFrameWidth(100);
-//    drawableGraph->update();
-//    drawableGraph->updateView();
-
 }
 
 void RelationshipsDialog::updateView()
@@ -192,11 +187,6 @@ void RelationshipsDialog::updateView()
     interactorStyle->GetInteractor()->SetPicker(AreaPicker);
     graphLayoutView->SetInteractorStyle(interactorStyle);
     this->ui->qvtkWidget->SetRenderWindow(graphLayoutView->GetRenderWindow());
-    //vtkSmartPointer<vtkRenderer> renderer = vtkSmartPointer<vtkRenderer>::New();
-    //vtkSmartPointer<vtkPropAssembly> assembly = vtkSmartPointer<vtkPropAssembly>::New();
-    //drawableGraph->draw(assembly);
-    //renderer->AddActor(assembly);
-    //this->ui->qvtkWidget->GetRenderWindow()->AddRenderer(renderer);
     this->ui->qvtkWidget->update();
 }
 
@@ -235,26 +225,6 @@ void RelationshipsDialog::slotAddAnnotationsRelationship(std::string type, doubl
 
 void RelationshipsDialog::slotConstrainRelationship()
 {
-    /*std::vector<unsigned int> selectedEdges = interactorStyle->getSelectedEdges();
-    std::vector<GraphTemplate::Arc<Annotation*> *> arcs = mesh->getGraph()->getArcs();
-    std::vector<AnnotationsRelationship*> relationships;
-    std::vector<Annotation*> involvedAnnotations;
-    std::string type;
-    for(unsigned int i = 0; i < selectedEdges.size(); i++){
-        GraphTemplate::Arc<Annotation*> *arc = arcs[selectedEdges[i]];
-        if(arc->getInfo() == nullptr) exit(12);
-        AnnotationsRelationship* relationship = static_cast<AnnotationsRelationship*>(arc->getInfo());
-        std::vector<AnnotationsRelationship*>::iterator it1 = std::find(relationships.begin(), relationships.end(), relationship);
-        if(it1 == relationships.end())
-            relationships.push_back(relationship);
-    }
-
-    if(relationships.size() != 1) exit(12);
-
-    emit constrainRelationship(relationships[0]);
-    */
-
-
     emit constrainRelationships();
     setIsSystemConstrained(true);
 }

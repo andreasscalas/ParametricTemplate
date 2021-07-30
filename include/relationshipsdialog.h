@@ -8,7 +8,6 @@
 
 #include <annotation.h>
 #include <semanticgraphinteractionstyle.h>
-#include <drawablegraph.h>
 #include <annotationsrelationship.h>
 
 #include <vtkMutableDirectedGraph.h>
@@ -55,7 +54,6 @@ private:
     vtkSmartPointer<SemanticGraphInteractionStyle> interactorStyle;
     vtkSmartPointer<vtkMutableDirectedGraph> g;
     AnnotationConstraintDialog *cd ;
-    GraphTemplate::DrawableGraph<Annotation*>* drawableGraph;
 
     bool isSystemConstrainable;
     bool isSystemConstrained;

@@ -8,19 +8,19 @@ class PointAnnotation : virtual public Annotation
 {
 public:
     PointAnnotation();
-    ~PointAnnotation();
+    virtual ~PointAnnotation() override;
 
-    virtual Annotation* transfer(ExtendedTrimesh* otherMesh, short metric = 2);
+    virtual Annotation* transfer(ExtendedTrimesh* otherMesh, short metric = 2) override;
 
-    virtual Annotation* parallelTransfer(ExtendedTrimesh* otherMesh, short metric = 2);
+    virtual Annotation* parallelTransfer(ExtendedTrimesh* otherMesh, short metric = 2) override;
 
-    virtual void print(std::ostream&);
+    virtual void print(std::ostream&) override;
 
-    virtual void printJson(rapidjson::PrettyWriter<rapidjson::StringBuffer>&);
+    virtual void printJson(rapidjson::PrettyWriter<rapidjson::StringBuffer>&) override;
 
-    virtual std::vector<IMATI_STL::Vertex*> getInvolvedVertices();
+    virtual std::vector<IMATI_STL::Vertex*> getInvolvedVertices() override;
 
-    virtual bool isPointInAnnotation(IMATI_STL::Vertex* annotatedPoint);
+    virtual bool isPointInAnnotation(IMATI_STL::Vertex* annotatedPoint) override;
 
     std::vector<IMATI_STL::Vertex *> getPoints() const;
     void setPoints(const std::vector<IMATI_STL::Vertex *> &value);

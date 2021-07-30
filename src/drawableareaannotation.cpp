@@ -6,8 +6,6 @@
 #include <vtkCellData.h>
 #include <vtkProperty.h>
 #include <vtkLine.h>
-#include <utilities.h>
-#include <annotationutilities.h>
 #include <drawableattribute.h>
 
 using namespace std;
@@ -113,4 +111,24 @@ void DrawableAreaAnnotation::clear()
     this->outlines.clear();
     this->mesh = nullptr;
 
+}
+
+Annotation *DrawableAreaAnnotation::transfer(ExtendedTrimesh *otherMesh, short metric)
+{
+    return SurfaceAnnotation::transfer(otherMesh, metric);
+}
+
+Annotation *DrawableAreaAnnotation::parallelTransfer(ExtendedTrimesh *otherMesh, short metric)
+{
+    return SurfaceAnnotation::parallelTransfer(otherMesh, metric);
+}
+
+std::vector<Vertex *> DrawableAreaAnnotation::getInvolvedVertices()
+{
+    return SurfaceAnnotation::getInvolvedVertices();
+}
+
+bool DrawableAreaAnnotation::isPointInAnnotation(Vertex *p)
+{
+    return SurfaceAnnotation::isPointInAnnotation(p);
 }

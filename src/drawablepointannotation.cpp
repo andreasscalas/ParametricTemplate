@@ -199,3 +199,23 @@ void DrawablePointAnnotation::clear()
     this->points.clear();
     this->mesh = nullptr;
 }
+
+Annotation *DrawablePointAnnotation::transfer(ExtendedTrimesh *otherMesh, short metric)
+{
+    return PointAnnotation::transfer(otherMesh, metric);
+}
+
+Annotation *DrawablePointAnnotation::parallelTransfer(ExtendedTrimesh *otherMesh, short metric)
+{
+    return PointAnnotation::parallelTransfer(otherMesh, metric);
+}
+
+std::vector<IMATI_STL::Vertex *> DrawablePointAnnotation::getInvolvedVertices()
+{
+    return PointAnnotation::getInvolvedVertices();
+}
+
+bool DrawablePointAnnotation::isPointInAnnotation(IMATI_STL::Vertex *p)
+{
+    return PointAnnotation::isPointInAnnotation(p);
+}

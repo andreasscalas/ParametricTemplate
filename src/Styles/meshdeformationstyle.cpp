@@ -53,7 +53,7 @@ void MeshDeformationStyle::drawBB(vtkSmartPointer<vtkPropAssembly> canvas)
     outlineActor = vtkSmartPointer<vtkActor>::NewInstance(outlineActor);
     for(std::map<ulong, bool>::iterator pit = pointsSelectionStatus->begin(); pit != pointsSelectionStatus->end(); pit++){
         if((*pit).second){
-            points->InsertNextPoint(this->data->GetPoint((*pit).first));
+            points->InsertNextPoint(this->data->GetPoint(static_cast<vtkIdType>((*pit).first)));
         }
     }
     polyData->SetPoints(points);
@@ -81,7 +81,7 @@ void MeshDeformationStyle::OnMouseWheelForward()
         for(std::map<ulong, bool>::iterator pit = pointsSelectionStatus->begin(); pit != pointsSelectionStatus->end(); pit++)
             if(pit->second)
                 selected.push_back(cage->getPoint(pit->first));
-        cP.resize(3, selected.size());
+        cP.resize(3, static_cast<long>(selected.size()));
         for(unsigned int i = 0; i < selected.size(); i++)
         {
             Eigen::Vector3d p = {selected[i]->x, selected[i]->y, selected[i]->z};

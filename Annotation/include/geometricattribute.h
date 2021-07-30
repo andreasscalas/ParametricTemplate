@@ -6,9 +6,10 @@
 
 class GeometricAttribute : virtual public Attribute
 {
+
 public:
     GeometricAttribute();
-    ~GeometricAttribute();
+    virtual ~GeometricAttribute() override;
 
     virtual void print(std::ostream&) override;
     virtual void printJson(rapidjson::PrettyWriter<rapidjson::StringBuffer>&) override;

@@ -10,9 +10,9 @@ class LineAnnotation : virtual public Annotation
 public:
     LineAnnotation();
 
-    ~LineAnnotation();
+    virtual ~LineAnnotation() override;
 
-    virtual Annotation* transfer(ExtendedTrimesh* otherMesh, short metric = 2);
+    virtual Annotation* transfer(ExtendedTrimesh* otherMesh, short metric = 2) override;
 
     /**
      * @brief parallelTransfer This method takes the annotations of an object defined on a model with
@@ -21,13 +21,13 @@ public:
      * @param metric the metric to be used for the shortest path
      * @return The annotation defined on the other model.
      */
-    virtual Annotation* parallelTransfer(ExtendedTrimesh* otherMesh, short metric = 2);
+    virtual Annotation* parallelTransfer(ExtendedTrimesh* otherMesh, short metric = 2) override;
 
-    virtual void print (std::ostream&);
-    virtual void printJson(rapidjson::PrettyWriter<rapidjson::StringBuffer>&);
+    virtual void print (std::ostream&) override;
+    virtual void printJson(rapidjson::PrettyWriter<rapidjson::StringBuffer>&) override;
 
-    virtual std::vector<IMATI_STL::Vertex*> getInvolvedVertices();
-    virtual bool isPointInAnnotation(IMATI_STL::Vertex* p);
+    virtual std::vector<IMATI_STL::Vertex*> getInvolvedVertices() override;
+    virtual bool isPointInAnnotation(IMATI_STL::Vertex* p) override;
 
     void addPolyLine(std::vector<IMATI_STL::Vertex *> &value);
     std::vector<std::vector<IMATI_STL::Vertex *> > getPolyLines() const;

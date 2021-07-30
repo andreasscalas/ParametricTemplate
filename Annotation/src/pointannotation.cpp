@@ -115,7 +115,7 @@ IMATI_STL::Point *PointAnnotation::getOrientation()
 {
     std::vector<IMATI_STL::Vertex*> involvedVertices = getInvolvedVertices();
     Eigen::MatrixXd eigenPoints;
-    eigenPoints.resize(3, involvedVertices.size());
+    eigenPoints.resize(3, static_cast<Eigen::Index>(involvedVertices.size()));
 
     for(unsigned int i = 0; i < involvedVertices.size(); i++ )
     {
@@ -128,4 +128,5 @@ IMATI_STL::Point *PointAnnotation::getOrientation()
     Eigen::Matrix3d U = eigenPoints.bdcSvd(Eigen::ComputeFullU | Eigen::ComputeThinV).matrixU();
     IMATI_STL::Point* orientation = new IMATI_STL::Point();
     orientation->setValue(U(0,2), U(1,2), U(2,2));
+    return orientation;
 }

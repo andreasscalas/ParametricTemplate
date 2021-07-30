@@ -42,6 +42,25 @@ void DrawableLineAnnotation::setLineWidth(float value)
     lineWidth = value;
 }
 
+Annotation *DrawableLineAnnotation::transfer(ExtendedTrimesh *otherMesh, short metric)
+{
+    return LineAnnotation::transfer(otherMesh, metric);
+}
+
+Annotation *DrawableLineAnnotation::parallelTransfer(ExtendedTrimesh *otherMesh, short metric)
+{
+    return LineAnnotation::parallelTransfer(otherMesh, metric);
+}
+
+std::vector<Vertex *> DrawableLineAnnotation::getInvolvedVertices()
+{
+    return LineAnnotation::getInvolvedVertices();
+}
+
+bool DrawableLineAnnotation::isPointInAnnotation(Vertex *p)
+{
+    return LineAnnotation::isPointInAnnotation(p);
+}
 
 void DrawableLineAnnotation::draw(vtkSmartPointer<vtkPropAssembly> assembly)
 {

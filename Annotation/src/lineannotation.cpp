@@ -78,7 +78,10 @@ Annotation *LineAnnotation::transfer(ExtendedTrimesh *otherMesh, short metric)
 
 Annotation *LineAnnotation::parallelTransfer(ExtendedTrimesh *otherMesh, short metric)
 {
-    return nullptr;
+    Annotation* a = otherMesh->getAnnotations()[0];
+    int b  = metric;
+    std::cout << b << "Just some nonsense to avoid warnings";
+    return a;
 }
 
 void LineAnnotation::print(ostream &os)
@@ -174,7 +177,7 @@ IMATI_STL::Point *LineAnnotation::getOrientation()
 {
     std::vector<IMATI_STL::Vertex*> involvedVertices = getInvolvedVertices();
     Eigen::MatrixXd eigenPoints;
-    eigenPoints.resize(3, involvedVertices.size());
+    eigenPoints.resize(3, static_cast<Eigen::Index>(involvedVertices.size()));
 
     for(unsigned int i = 0; i < involvedVertices.size(); i++ )
     {
@@ -187,4 +190,5 @@ IMATI_STL::Point *LineAnnotation::getOrientation()
     Eigen::Matrix3d U = eigenPoints.bdcSvd(Eigen::ComputeFullU | Eigen::ComputeThinV).matrixU();
     IMATI_STL::Point* orientation = new IMATI_STL::Point();
     orientation->setValue(U(0,2), U(1,2), U(2,2));
+    return orientation;
 }

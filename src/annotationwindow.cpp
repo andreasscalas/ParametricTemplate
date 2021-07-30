@@ -18,6 +18,7 @@
 #include <vtkRenderWindow.h>
 #include <vtkCamera.h>
 #include <vtkAreaPicker.h>
+#include <vtkMapper.h>
 
 #include <QInputDialog>
 #include <QMenu>
@@ -369,7 +370,7 @@ void AnnotationWindow::slotOpenAnnotation()
         manager.setMesh(mesh);
         if(!manager.readAnnotations(filename.toStdString()))
             std::cout<<"Something went wrong during annotation file opening."<< std::endl<< std::flush;
-        reachedId = mesh->getAnnotations().size();
+        reachedId = static_cast<unsigned int>(mesh->getAnnotations().size());
         for(unsigned int i = 0; i < reachedId; i++)
         {
             DrawableAnnotation* dAnnotation;

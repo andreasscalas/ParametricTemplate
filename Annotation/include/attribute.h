@@ -7,6 +7,7 @@
 class Attribute
 {
 public:
+    virtual ~Attribute() {  }
     virtual void print(std::ostream& os);
     virtual void printJson(rapidjson::PrettyWriter<rapidjson::StringBuffer> &writer);
 
